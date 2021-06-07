@@ -1,0 +1,8 @@
+#FAZ O LOGIN DO USUARIO
+POST  http://localhost:3000/usuarios/:9
+Content-Type: application/json
+
+{
+    "id_usuario": 9
+   
+}
