@@ -43,7 +43,7 @@ exports.getUmproduto = (req, res, next) => {
                         
                     }                
                 const response = {
-                    mensagem: 'Produto inserido com sucesso',
+                    
                     produto:{
                         id: result[0].id,
                         status: result[0].status,

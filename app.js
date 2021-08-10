@@ -30,11 +30,11 @@ app.use((req, res, next) =>{
 );
  
 app.use('/products', rotaProdutos);
-app.use('/pedidos', rotaPedidos);
-app.use('/usuarios', rotaUsuarios);
-app.use('/grupo', rotaGrupo);
-app.use('/marca', rotaMarca);
-app.use('/locacao', rotaLocacao);
+//app.use('/pedidos', rotaPedidos);
+//app.use('/usuarios', rotaUsuarios);
+//app.use('/grupo', rotaGrupo);
+//app.use('/marca', rotaMarca);
+//app.use('/locacao', rotaLocacao);
 
 //QUANDO NÃO É ENCONTRADA A ROTA
 app.use((req, res, next) =>{
