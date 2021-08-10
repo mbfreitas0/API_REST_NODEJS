@@ -11,16 +11,12 @@ exports.getProdutos = (req, res, next) => {
                  
                  produtos: result.map(prod =>{
                      return {
-                         id_produto: prod.id_produto,
-                         id_grupo: prod.id_grupo,
-                         id_marca: prod.id_marca,
-                         id_locacao: prod.id_locacao,
-                         nome: prod.nome,
-                         custo: prod.custo,
-                         preco: prod.preco,
-                         qtd_estoque: prod.qtd_estoque,
-                         imagem_produto: prod.imagem_produto,
-                          
+                         id: prod.id,
+                         status: prod.status,
+                         descricao: prod.descricao,
+                         estoque_min: prod.estoque_min,
+                         estoque_max: prod.estoque_max,
+                                                   
                         }
                    })   
                 }
@@ -34,8 +30,8 @@ exports.getUmproduto = (req, res, next) => {
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error:error })}
         conn.query(
-            'SELECT * FROM produtos WHERE id_produto = ?;',
-            [req.params.id_produto],
+            'SELECT * FROM produtos WHERE id = ?;',
+            [req.params.id],
             (error, result, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
@@ -49,20 +45,11 @@ exports.getUmproduto = (req, res, next) => {
                 const response = {
                     mensagem: 'Produto inserido com sucesso',
                     produto:{
-                        id_produto: result[0].id_produto,
-                        id_grupo:result[0].id_grupo,
-                        id_marca:result[0].id_marca,
-                        id_locacao:result[0].id_locacao,
-                        nome: result[0].nome,
-                        preco: result[0].preco,
-                        custo: result[0].custo,
-                        qtd_estoque: result[0].qtd_estoque,
-                        imagem_produto: result[0].imagem_produto,
-                        request: {
-                            tipo: 'GET',
-                            descricao: 'Retorna todos os produtos',
-                            url: 'http://localhost:3000/produtos/'
-                        }
+                        id: result[0].id,
+                        status: result[0].status,
+                        descricao: result[0].descricao,
+                        estoque_min: result[0].estoque_min,
+                        estoque_max: result[0].estoque_max,
                     }
                             
                 }
@@ -77,27 +64,20 @@ exports.postProduto = (req, res, next) =>{
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'INSERT INTO produtos(id_grupo, id_marca, id_locacao, nome, preco, custo, qtd_estoque, imagem_produto) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
-            [req.body.id_grupo, req.body.id_marca, req.body.id_locacao, req.body.nome, req.body.preco, req.body.custo, req.body.qtd_estoque, req.file.path],
+           'INSERT INTO produtos(status, descricao, estoque_min, estoque_max) VALUES (?, ?, ?, ?)',
+            [req.body.status, req.body.descricao, req.body.estoque_min, req.body.estoque_max],
             (error, result, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
                 const response = {
                     mensagem: 'Produto inserido com sucesso',
                     produtoCriado:{
-                        id_produto: result.id_produto,
-                        id_grupo: req.body.id_grupo,
-                        id_marca: req.body.id_marca,
-                        id_locacao: req.body.id_locacao,
-                        nome: req.body.nome,
-                        preco: req.body.preco,
-                        custo: req.body.custo,
-                        qtd_estoque: req.body.qtd_estoque,
-                        request: {
-                            tipo: 'POST',
-                            descricao: 'Insere um produto',
-                            url: 'http://localhost:3000/produtos/'
-                        }
+                        id: result.id,
+                        status: req.body.status,
+                        descricao: req.body.descricao,
+                        estoque_min: req.body.estoque_min,
+                        estoque_max: req.body.estoque_max,
+                        
                     }
                             
                 }
@@ -111,27 +91,19 @@ exports.updateProduto = (req, res, next) =>{
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'UPDATE produtos SET id_grupo = ?, id_marca = ?, id_locacao = ?, nome = ?, preco = ?, custo = ?, qtd_estoque = ? WHERE id_produto = ?',
-           [req.body.id_grupo, req.body.id_marca, req.body.id_locacao, req.body.nome, req.body.preco, req.body.custo, req.body.qtd_estoque],
+           'UPDATE produtos SET status = ?, descricao = ?, estoque_min = ?, estoque_max = ? WHERE id = ?',
+           [req.body.status, req.body.descricao, req.body.estoque_min, req.body.estoque_max],
             (error, result, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
                 const response = {
                     mensagem: 'Produto atualizado com sucesso',
                     produtoAtualizado:{
-                        id_produto: req.body.id_produto,
-                        id_grupo: req.body.id_grupo,
-                        id_marca: req.body.id_marca,
-                        id_locacao: req.body.id_locacao,
-                        nome: req.body.nome,                        
-                        preco: req.body.preco,
-                        custo: req.body.custo,
-                        qtd_estoque: req.body.qtd_estoque,
-                        request: {
-                            tipo: 'GET',
-                            descricao: 'Retorna os detalhes de um produto específico',
-                            url: 'http://localhost:3000/produtos/' + req.body.id_produto
-                        }
+                        id: req.body.id,
+                        status: req.body.status,
+                        descricao: req.body.descricao,
+                        estoque_min: req.body.estoque_min,
+                        estoque_max: req.body.estoque_max,                        
                     }
                             
                 }
@@ -145,8 +117,8 @@ exports.deleteProduto = (req, res, next) =>{
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'DELETE FROM produtos WHERE id_produto = ?',
-            [req.body.id_produto],
+           'DELETE FROM produtos WHERE id = ?',
+            [req.body.id],
             (error, resultado, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
@@ -157,14 +129,10 @@ exports.deleteProduto = (req, res, next) =>{
                         descricao: 'Insere um produto',
                         url: 'http://localhost:3000/produtos/',
                         body:{
-                            id_grupo: 'Number',
-                            id_marca: 'Number',
-                            id_locacao: 'Number',
-                            nome: 'String',
-                            preco: 'Number',
-                            custo: 'Number',
-                            qtd_estoque: 'Number'
-
+                            status: 'String',
+                            descricao: 'String',
+                            estoque_min: 'Number',
+                            estoque_max: 'Number',
                         }
                     }
                 }

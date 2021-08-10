@@ -1,17 +1,17 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const rotaProdutos = require('./routes/produtos');
-const rotaPedidos = require('./routes/pedidos');
-const rotaUsuarios = require('./routes/usuarios');
-const rotaGrupo = require('./routes/grupo');
-const rotaMarca = require('./routes/marca');
-const rotaLocacao = require('./routes/locacao');
-const morgan = require('morgan');
+//const rotaProdutos = require('./routes/produtos');
+//const rotaPedidos = require('./routes/pedidos');
+//const rotaUsuarios = require('./routes/usuarios');
+//const rotaGrupo = require('./routes/grupo');
+//const rotaMarca = require('./routes/marca');
+//const rotaLocacao = require('./routes/locacao');
+//const morgan = require('morgan');
 
 app.use(cors());
-app.use(morgan('dev'));
-app.use('/uploads', express.static('uploads'));
+//app.use(morgan('dev'));
+//app.use('/uploads', express.static('uploads'));
 app.use(express.urlencoded({extended: false}));//ENTRADA DE DADOS SIMPLES
 app.use(express.json());//ENTRADA DO EXPRESS.URLENCODED EM FORMATO JSON
 
@@ -29,7 +29,7 @@ app.use((req, res, next) =>{
     
 );
  
-app.use('/produtos', rotaProdutos);
+app.use('/products', rotaProdutos);
 app.use('/pedidos', rotaPedidos);
 app.use('/usuarios', rotaUsuarios);
 app.use('/grupo', rotaGrupo);
