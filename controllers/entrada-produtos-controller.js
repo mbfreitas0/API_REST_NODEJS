@@ -57,12 +57,12 @@ exports.getUmaEntrada = (req, res, next) => {
     });
 }
 
-exports.postProduto = (req, res, next) =>{
+exports.postEntrada = (req, res, next) =>{
     console.log(req.file);
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'INSERT INTO produtos(status, descricao, estoque_min, estoque_max) VALUES (?, ?, ?, ?)',
+           'INSERT INTO entrada_produtos(id_produto, qtde, valor_unitario, data_entrada) VALUES (?, ?, ?, ?)',
             [req.body.status, req.body.descricao, req.body.estoque_min, req.body.estoque_max],
             (error, result, field) => {
                 conn.release();
@@ -71,10 +71,10 @@ exports.postProduto = (req, res, next) =>{
                     mensagem: 'Produto inserido com sucesso',
                     produtoCriado:{
                         id: result.id,
-                        status: req.body.status,
-                        descricao: req.body.descricao,
-                        estoque_min: req.body.estoque_min,
-                        estoque_max: req.body.estoque_max,                        
+                        id_produto: req.body.id_produto,
+                        qtde: req.body.qtde,
+                        valor_unitario: req.body.valor_unitario,
+                        data_entrada: req.body.data_entrada,                        
                     }                            
                 }
                 return res.status(201).send(response);
@@ -83,23 +83,23 @@ exports.postProduto = (req, res, next) =>{
     });
 }
 
-exports.updateProduto = (req, res, next) =>{
+exports.updateEntrada = (req, res, next) =>{
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'UPDATE produtos SET status = ?, descricao = ?, estoque_min = ?, estoque_max = ? WHERE id = ?',
-           [req.body.status, req.body.descricao, req.body.estoque_min, req.body.estoque_max, req.params.id],
+           'UPDATE entrada_produtos SET id_produto = ?, qtde = ?, valor_unitario = ?, data_entrada = ? WHERE id = ?',
+           [req.body.id_produto, req.body.qtde, req.body.valor_unitario, req.body.data_entrada, req.params.id],
             (error, result, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
                 const response = {
                     mensagem: 'Produto atualizado com sucesso',
-                    produtoAtualizado:{
+                    estoqueAtualizado:{
                         id: req.params.id,
-                        status: req.body.status,
-                        descricao: req.body.descricao,
-                        estoque_min: req.body.estoque_min,
-                        estoque_max: req.body.estoque_max,                        
+                        id_produto: req.body.id_produto,
+                        qtde: req.body.qtde,
+                        valor_unit: req.body.valor_unit,
+                        data_entrada: req.body.data_entrada,                        
                     }
                             
                 }
@@ -109,11 +109,11 @@ exports.updateProduto = (req, res, next) =>{
     });
 }
 
-exports.deleteProduto = (req, res, next) =>{
+exports.deleteEntrada = (req, res, next) =>{
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
-           'DELETE FROM produtos WHERE id = ?',
+           'DELETE FROM entrada_produtos WHERE id = ?',
             [req.body.id],
             (error, resultado, field) => {
                 conn.release();
@@ -121,14 +121,12 @@ exports.deleteProduto = (req, res, next) =>{
                 const response = {
                     mensagem: 'produto removido com sucesso',
                     request: {
-                        tipo: 'POST',
-                        descricao: 'Insere um produto',
-                        url: 'http://localhost:3000/produtos/',
+                       
                         body:{
-                            status: 'String',
-                            descricao: 'String',
-                            estoque_min: 'Number',
-                            estoque_max: 'Number',
+                            id_produto: 'String',
+                            qtde: 'String',
+                            valor_unitario: 'Number',
+                            data_entrada: 'Number',
                         }
                     }
                 }

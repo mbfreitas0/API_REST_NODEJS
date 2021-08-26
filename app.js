@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const rotaProdutos = require('./routes/products');
+const rotaEntradaProdutos = require('./routes/entrada_produtos');
 //const rotaPedidos = require('./routes/pedidos');
 //const rotaUsuarios = require('./routes/usuarios');
 //const rotaGrupo = require('./routes/grupo');
@@ -30,6 +31,7 @@ app.use((req, res, next) =>{
 );
  
 app.use('/products', rotaProdutos);
+app.use('/entryproducts', rotaEntradaProdutos);
 //app.use('/pedidos', rotaPedidos);
 //app.use('/usuarios', rotaUsuarios);
 //app.use('/grupo', rotaGrupo);
