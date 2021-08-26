@@ -38,7 +38,7 @@ app.use('/products', rotaProdutos);
 
 //QUANDO NÃO É ENCONTRADA A ROTA
 app.use((req, res, next) =>{
-    const erro = new Error('Não encontrado !');
+    const erro = new Error('Requisição não encontrada !');
     erro.status = 404;
     next(erro);
 });

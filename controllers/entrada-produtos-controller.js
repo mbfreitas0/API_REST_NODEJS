@@ -1,10 +1,10 @@
 const mysql = require('../mysql').pool;
 
-exports.getProdutos = (req, res, next) => {
+exports.getEntradaProdutos = (req, res, next) => {
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error:error })}
         conn.query(
-            'SELECT * FROM produtos;',
+            'SELECT * FROM entrada_produtos;',
             (error, result, fields) => {
                 if(error){return res.status(500).send({ error : error })}
                 const response = {
@@ -12,11 +12,11 @@ exports.getProdutos = (req, res, next) => {
                  produtos: result.map(prod =>{
                      return {
                          id: prod.id,
-                         status: prod.status,
-                         descricao: prod.descricao,
-                         estoque_min: prod.estoque_min,
-                         estoque_max: prod.estoque_max,
-                                                   
+                         id_produto: prod.id_produto,
+                         qtde: prod.qtde,
+                         valor_unitario: prod.valor_unitario,
+                         data_entrada: prod.data_entrada,
+                                                                            
                         }
                    })   
                 }
@@ -26,11 +26,11 @@ exports.getProdutos = (req, res, next) => {
     });
 }
 
-exports.getUmproduto = (req, res, next) => {
+exports.getUmaEntrada = (req, res, next) => {
     mysql.getConnection((error, conn) =>{
         if(error){return res.status(500).send({ error:error })}
         conn.query(
-            'SELECT * FROM produtos WHERE id = ?;',
+            'SELECT * FROM entrada_produtos WHERE id = ?;',
             [req.params.id],
             (error, result, field) => {
                 conn.release();
@@ -38,17 +38,17 @@ exports.getUmproduto = (req, res, next) => {
 
                     if (result.length == 0) {
                         return res.status(404).send({
-                          mensagem: 'Não foi encontrado produto com este ID'
+                          mensagem: 'Não foi encontrado entrada com este ID'
                         })
                         
                     }                
                 const response = {                    
                    
                         id: result[0].id,
-                        status: result[0].status,
-                        descricao: result[0].descricao,
-                        estoque_min: result[0].estoque_min,
-                        estoque_max: result[0].estoque_max,                   
+                        id_produto: result[0].id_produto,
+                        qtde: result[0].qtde,
+                        valor_unitario: result[0].valor_unitario,
+                        data_entrada: result[0].data_entrada,                   
                             
                 }
                 return res.status(201).send(response);

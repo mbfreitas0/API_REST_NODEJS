@@ -40,7 +40,7 @@ router.post('/', produtosController.postProduto);
 router.get('/:id', produtosController.getUmproduto);
 
 //ALTERA UM PRODUTO
-router.patch('/', produtosController.updateProduto);
+router.put('/:id', produtosController.updateProduto);
 
 //DELETA UM PRODUTO
 router.delete('/:id', produtosController.deleteProduto);   
