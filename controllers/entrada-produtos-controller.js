@@ -63,7 +63,7 @@ exports.postEntrada = (req, res, next) =>{
         if(error){return res.status(500).send({ error : error })}
         conn.query(
            'INSERT INTO entrada_produtos(id_produto, qtde, valor_unitario, data_entrada) VALUES (?, ?, ?, ?)',
-            [req.body.status, req.body.descricao, req.body.estoque_min, req.body.estoque_max],
+            [req.body.id_produto, req.body.qtde, req.body.valor_unitario, req.body.data_entrada],
             (error, result, field) => {
                 conn.release();
                 if(error){return res.status(500).send({ error : error })}
